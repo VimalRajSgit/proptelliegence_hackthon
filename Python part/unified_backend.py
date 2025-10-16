@@ -7,12 +7,15 @@ from datetime import datetime
 import random
 
 # Import your existing modules
+<<<<<<< HEAD
 # Add the Python_part directory to the path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
 python_part_dir = os.path.join(parent_dir, "Python_part")
 sys.path.append(python_part_dir)
 
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
 from tsunami_detector import fetch_recent_earthquakes, calculate_indian_tsunami_risk
 from blog_gen2 import (
     get_detailed_weather, get_monthly_weather_data, 
@@ -21,10 +24,13 @@ from blog_gen2 import (
 )
 from podcast import generate_climate_podcast, generate_weather_script_with_llama, generate_tts
 
+<<<<<<< HEAD
 # Import Twitter functionality
 import tweepy
 import requests
 
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React Native
 
@@ -32,6 +38,7 @@ CORS(app)  # Enable CORS for React Native
 CITIES = ["Chennai", "Delhi", "Bengaluru", "Mumbai", "Kolkata", "Hyderabad"]
 BASE_URL = "http://172.17.132.1:5000"
 
+<<<<<<< HEAD
 # Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
@@ -130,6 +137,8 @@ def authenticate_twitter():
         print(f"❌ Twitter authentication error: {e}")
         return None, None
 
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
 @app.route("/")
 def home():
     return jsonify({
@@ -138,15 +147,23 @@ def home():
             "Weather Blog Generator",
             "Tsunami Detection", 
             "Climate Podcast",
+<<<<<<< HEAD
             "Weather Data",
             "Twitter Weather Posts"
+=======
+            "Weather Data"
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
         ],
         "endpoints": {
             "weather_blog": "/api/weather_blog",
             "tsunami": "/api/tsunami",
             "podcast": "/api/podcast",
+<<<<<<< HEAD
             "weather": "/api/weather",
             "twitter": "/api/twitter"
+=======
+            "weather": "/api/weather"
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
         }
     })
 
@@ -302,6 +319,7 @@ def static_files(filename):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+<<<<<<< HEAD
 # ==================== TWITTER ENDPOINT ====================
 @app.route("/api/twitter", methods=["GET"])
 def twitter_weather_post():
@@ -392,6 +410,8 @@ def twitter_weather_post():
         print(f"❌ Twitter weather post error: {e}")
         return jsonify({"error": str(e)}), 500
 
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
 # ==================== CITIES LIST ====================
 @app.route("/api/cities", methods=["GET"])
 def get_cities():
@@ -407,7 +427,10 @@ if __name__ == "__main__":
     print("   • Tsunami Detection: http://172.17.132.1:5000/api/tsunami")
     print("   • Podcast: http://172.17.132.1:5000/api/podcast")
     print("   • Weather Data: http://172.17.132.1:5000/api/weather")
+<<<<<<< HEAD
     print("   • Twitter Weather: http://172.17.132.1:5000/api/twitter")
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
     print("   • Cities List: http://172.17.132.1:5000/api/cities")
     print("=" * 60)
     

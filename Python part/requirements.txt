@@ -1,0 +1,10 @@
+reportlab==4.4.4
+crewai
+crewai-tools
+langchain-community
+langchain-core
+langchain-groq
+requests
+python-dotenv
+flask
+flask-cors

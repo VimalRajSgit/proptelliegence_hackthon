@@ -25,8 +25,12 @@ export default function App() {
     { id: "blog", title: "📝 Blog", icon: "📝" },
     { id: "weather", title: "🌡️ Weather", icon: "🌡️" },
     { id: "tsunami", title: "🌊 Tsunami", icon: "🌊" },
+<<<<<<< HEAD
     { id: "podcast", title: "🎙️ Podcast", icon: "🎙️" },
     { id: "twitter", title: "🐦 Twitter", icon: "🐦" }
+=======
+    { id: "podcast", title: "🎙️ Podcast", icon: "🎙️" }
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
   ];
 
   const getEndpointForTab = (tabId) => {
@@ -34,8 +38,12 @@ export default function App() {
       'blog': '/api/weather_blog',
       'weather': '/api/weather',
       'tsunami': '/api/tsunami',
+<<<<<<< HEAD
       'podcast': '/api/podcast',
       'twitter': '/api/twitter'
+=======
+      'podcast': '/api/podcast'
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
     };
     return endpointMap[tabId] || '/api/weather_blog';
   };
@@ -247,6 +255,7 @@ export default function App() {
     );
   };
 
+<<<<<<< HEAD
   const renderTwitterTab = () => {
     const twitterData = data.twitter;
     if (loading.twitter) return <ActivityIndicator size="large" style={styles.center} />;
@@ -301,13 +310,18 @@ export default function App() {
     );
   };
 
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
   const renderContent = () => {
     switch (activeTab) {
       case "blog": return renderBlogTab();
       case "weather": return renderWeatherTab();
       case "tsunami": return renderTsunamiTab();
       case "podcast": return renderPodcastTab();
+<<<<<<< HEAD
       case "twitter": return renderTwitterTab();
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
       default: return renderBlogTab();
     }
   };
@@ -492,6 +506,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     margin: 20,
+<<<<<<< HEAD
   },
   tweetText: {
     fontSize: 16,
@@ -506,5 +521,7 @@ const styles = StyleSheet.create({
   },
   successButton: {
     backgroundColor: "#28a745",
+=======
+>>>>>>> 9289b80dd1379fcee5515fdd737f5ef9b0dd1ac5
   }
 });
