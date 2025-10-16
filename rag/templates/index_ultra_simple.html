@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Environmental Law RAG System (Ultra Simple & Free)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .free-badge {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .ultra-simple-badge {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .search-section {
+            margin-bottom: 30px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .answer {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .sources {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .source-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 3px;
+            border-left: 3px solid #27ae60;
+        }
+        .source-title {
+            font-weight: bold;
+            color: #27ae60;
+        }
+        .similarity-score {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-left: 10px;
+        }
+        .loading {
+            text-align: center;
+            color: #7f8c8d;
+        }
+        .error {
+            color: #e74c3c;
+            background-color: #fadbd8;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .stats {
+            background-color: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2196f3;
+        }
+        .tech-info {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌍 Environmental Law RAG System <span class="free-badge">FREE</span><span class="ultra-simple-badge">ULTRA SIMPLE</span></h1>
+        
+        <div class="info-box">
+            <strong>ℹ️ No API Keys Required!</strong> This system runs entirely on your local machine using only stable, well-tested libraries. No dependency conflicts!
+        </div>
+        
+        <div class="tech-info">
+            <strong>🔧 Technology:</strong> Uses TF-IDF (Term Frequency-Inverse Document Frequency) for fast and reliable text similarity. No complex embeddings or heavy dependencies!
+        </div>
+        
+        <div class="stats" id="stats">
+            <strong>System Statistics:</strong> Loading...
+        </div>
+        
+        <div class="search-section">
+            <h2>Ask a Question</h2>
+            <div class="input-group">
+                <input type="text" id="questionInput" placeholder="Ask about environmental laws, regulations, or policies..." />
+                <button onclick="askQuestion()" id="askBtn">Ask</button>
+            </div>
+            
+            <div id="results" class="results"></div>
+        </div>
+        
+        <div class="search-section">
+            <h2>Search Documents</h2>
+            <div class="input-group">
+                <input type="text" id="searchInput" placeholder="Search for specific topics or keywords..." />
+                <button onclick="searchDocuments()" id="searchBtn">Search</button>
+            </div>
+            
+            <div id="searchResults" class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Load statistics on page load
+        loadStats();
+        
+        function loadStats() {
+            fetch('/api/stats')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('stats').innerHTML = 
+                            '<strong>Error:</strong> ' + data.error;
+                    } else {
+                        document.getElementById('stats').innerHTML = 
+                            '<strong>System Statistics:</strong> ' +
+                            data.total_chunks + ' chunks from ' + 
+                            data.unique_documents + ' documents';
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('stats').innerHTML = 
+                        '<strong>Error:</strong> Failed to load statistics';
+                });
+        }
+        
+        function askQuestion() {
+            const question = document.getElementById('questionInput').value.trim();
+            if (!question) return;
+            
+            const btn = document.getElementById('askBtn');
+            const results = document.getElementById('results');
+            
+            btn.disabled = true;
+            btn.textContent = 'Asking...';
+            results.innerHTML = '<div class="loading">Processing your question...</div>';
+            
+            fetch('/api/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question: question })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    results.innerHTML = '<div class="error">Error: ' + data.error + '</div>';
+                } else {
+                    let html = '<div class="answer"><strong>Answer:</strong><br>' + data.answer + '</div>';
+                    
+                    if (data.sources && data.sources.length > 0) {
+                        html += '<div class="sources"><strong>Sources:</strong>';
+                        data.sources.forEach(source => {
+                            html += '<div class="source-item">' +
+                                '<div class="source-title">' + source.source + 
+                                '<span class="similarity-score">(Relevance: ' + (source.similarity_score * 100).toFixed(1) + '%)</span></div>' +
+                                '<div>' + source.content + '</div>' +
+                                '</div>';
+                        });
+                        html += '</div>';
+                    }
+                    
+                    results.innerHTML = html;
+                }
+            })
+            .catch(error => {
+                results.innerHTML = '<div class="error">Error: ' + error.message + '</div>';
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = 'Ask';
+            });
+        }
+        
+        function searchDocuments() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+            
+            const btn = document.getElementById('searchBtn');
+            const results = document.getElementById('searchResults');
+            
+            btn.disabled = true;
+            btn.textContent = 'Searching...';
+            results.innerHTML = '<div class="loading">Searching documents...</div>';
+            
+            fetch('/api/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ query: query, k: 5 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    results.innerHTML = '<div class="error">Error: ' + data.error + '</div>';
+                } else {
+                    let html = '<div class="sources"><strong>Search Results:</strong>';
+                    if (data.results.length === 0) {
+                        html += '<div>No results found.</div>';
+                    } else {
+                        data.results.forEach((result, index) => {
+                            html += '<div class="source-item">' +
+                                '<div class="source-title">' + (index + 1) + '. ' + result.source + 
+                                '<span class="similarity-score">(Relevance: ' + (result.similarity_score * 100).toFixed(1) + '%)</span></div>' +
+                                '<div>' + result.content + '</div>' +
+                                '</div>';
+                        });
+                    }
+                    html += '</div>';
+                    results.innerHTML = html;
+                }
+            })
+            .catch(error => {
+                results.innerHTML = '<div class="error">Error: ' + error.message + '</div>';
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.textContent = 'Search';
+            });
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('questionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askQuestion();
+            }
+        });
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchDocuments();
+            }
+        });
+    </script>
+</body>
+</html>

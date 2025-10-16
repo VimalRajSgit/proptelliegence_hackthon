@@ -1,0 +1,21 @@
+crewai
+crewai-tools
+langchain-community
+langchain-core
+langchain-groq
+requests
+python-dotenv
+flask
+flask-cors
+reportlab
+# RAG System Dependencies
+chromadb
+langchain
+langchain-chroma
+pypdf2
+sentence-transformers==2.2.2
+numpy
+pandas
+scikit-learn
+# Twitter Integration
+tweepy
